@@ -1,0 +1,33 @@
+{
+  "name": "mock-http-proxy",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Mock HTTP Proxy",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node --env-file .env index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zdrgeo/mock-http-proxy.git"
+  },
+  "keywords": [
+    "Mock",
+    "HTTP",
+    "Proxy"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zdrgeo/mock-http-proxy/issues"
+  },
+  "homepage": "https://github.com/zdrgeo/mock-http-proxy#readme",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.0",
+    "fast-xml-parser": "^4.5.0",
+    "http-proxy-middleware": "^3.0.2",
+    "nock": "^13.5.5"
+  }
+}

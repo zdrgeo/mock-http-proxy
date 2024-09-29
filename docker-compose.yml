@@ -1,0 +1,14 @@
+services:
+  mock-http-proxy:
+    image: "node:20"
+    # image: "mock-http-proxy:latest"
+    working_dir: /mock-http-proxy
+    env_file: .env
+    volumes:
+      - ./:/mock-http-proxy
+      # - ./mock:/mock-http-proxy/mock
+    expose:
+      - "3000"
+    ports:
+      - "3000:3000"
+    command: "npm start"

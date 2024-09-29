@@ -1,0 +1,30 @@
+###
+
+POST http://localhost:3000/api/ServiceDeskAPI.asmx
+Content-Type: text/xml; charset=utf-8
+
+<?xml version="1.0" encoding="utf-8"?>
+<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
+  <soap12:Body>
+    <CelsiusToFahrenheit xmlns="https://www.w3schools.com/xml/">
+      <Celsius>string</Celsius>
+    </CelsiusToFahrenheit>
+  </soap12:Body>
+</soap12:Envelope>
+
+###
+
+POST http://localhost:3000/api/ServiceDeskAPI.asmx
+Content-Type: text/xml; charset=utf-8
+
+<?xml version="1.0" encoding="utf-8"?>
+<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
+  <soap12:Body>
+    <FahrenheitToCelsius xmlns="https://www.w3schools.com/xml/">
+      <Fahrenheit>string</Fahrenheit>
+    </FahrenheitToCelsius>
+  </soap12:Body>
+</soap12:Envelope>
+
+###
+
