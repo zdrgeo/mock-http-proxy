@@ -18,16 +18,12 @@ const TEMPCONVERT_PATH = '/xml/tempconvert.asmx';
 mock('W3Schools_TempConvert_CelsiusToFahrenheit', baseUrl, TEMPCONVERT_PATH).matchBody(body => {
     let soapActionData = getSOAPActionData('CelsiusToFahrenheit', body);
 
-    let matchBody = soapActionData != null;
-
-    return matchBody;
+    return soapActionData != null;
 }).replyBody(body => {
     let soapActionData = getSOAPActionData('CelsiusToFahrenheit', body);
 
-    let replyBody = readTemplateBodyFile('./W3Schools/TempConvert/SubscriberOnlinestatus/reply.ejs', soapActionData);
-
-    return replyBody;
-}).build();
+    return readTemplateBodyFile('./W3Schools/TempConvert/SubscriberOnlinestatus/reply.ejs', soapActionData);
+).build();
 
 /**
  * Mocks FahrenheitToCelsius SOAP action to reply from XML file.
@@ -35,11 +31,7 @@ mock('W3Schools_TempConvert_CelsiusToFahrenheit', baseUrl, TEMPCONVERT_PATH).mat
 mock('W3Schools_TempConvert_FahrenheitToCelsius', baseUrl, TEMPCONVERT_PATH).matchBody(body => {
     let soapActionData = getSOAPActionData('FahrenheitToCelsius', body);
 
-    let matchBody = soapActionData != null;
-
-    return matchBody;
+    return soapActionData != null;
 }).replyBody(_body => {
-    let replyBody = readBodyFile('./W3Schools/TempConvert/FahrenheitToCelsius/reply.xml')
-
-    return replyBody;
+    return readBodyFile('./W3Schools/TempConvert/FahrenheitToCelsius/reply.xml')
 }).build();
