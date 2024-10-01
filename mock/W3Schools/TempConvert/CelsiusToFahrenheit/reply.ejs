@@ -1,8 +1,16 @@
+<%
+  function randomTemp(min, max) {
+    const minCeiled = Math.ceil(min);
+    const maxFloored = Math.floor(max);
+
+    return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled);
+  }
+%>
 <?xml version="1.0" encoding="utf-8"?>
 <soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
   <soap12:Body>
     <CelsiusToFahrenheitResponse xmlns="https://www.w3schools.com/xml/">
-      <CelsiusToFahrenheitResult>68</CelsiusToFahrenheitResult>
+      <CelsiusToFahrenheitResult><%= randomTemp(20, 40) %></CelsiusToFahrenheitResult>
     </CelsiusToFahrenheitResponse>
   </soap12:Body>
 </soap12:Envelope>

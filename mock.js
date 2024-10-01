@@ -1,5 +1,7 @@
 import nock from 'nock';
 
+import { baseUrl } from '../proxy.js';
+
 export {
     mockPath,
     mock,
@@ -7,7 +9,7 @@ export {
 
 const mockPath = process.env.MOCK_PATH || 'mock';
 
-function mock(name, baseUrl, path) {
+function mock(name, path) {
     function matchBodySafe(name, func) {
         const matchBodySafeFunc = (body) => {
             let matchBody = false;

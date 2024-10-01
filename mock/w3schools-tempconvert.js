@@ -1,4 +1,3 @@
-import { baseUrl } from '../proxy.js';
 import { mock } from '../mock.js';
 
 import { readBodyFile } from './util/body-file-util.js';
@@ -15,7 +14,7 @@ const TEMPCONVERT_PATH = '/xml/tempconvert.asmx';
 /**
  * Mocks CelsiusToFahrenheit SOAP action to reply from EJS template file.
  */
-mock('W3Schools_TempConvert_CelsiusToFahrenheit', baseUrl, TEMPCONVERT_PATH).matchBody(body => {
+mock('W3Schools_TempConvert_CelsiusToFahrenheit', TEMPCONVERT_PATH).matchBody(body => {
     let soapActionData = getSOAPActionData('CelsiusToFahrenheit', body);
 
     return soapActionData != null;
@@ -28,7 +27,7 @@ mock('W3Schools_TempConvert_CelsiusToFahrenheit', baseUrl, TEMPCONVERT_PATH).mat
 /**
  * Mocks FahrenheitToCelsius SOAP action to reply from XML file.
  */
-mock('W3Schools_TempConvert_FahrenheitToCelsius', baseUrl, TEMPCONVERT_PATH).matchBody(body => {
+mock('W3Schools_TempConvert_FahrenheitToCelsius', TEMPCONVERT_PATH).matchBody(body => {
     let soapActionData = getSOAPActionData('FahrenheitToCelsius', body);
 
     return soapActionData != null;
