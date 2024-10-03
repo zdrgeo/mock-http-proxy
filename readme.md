@@ -30,7 +30,7 @@ mock(/* Mock name (see also X-Mock-Name response header) */, /* URL path */).mat
 }).build();
 ```
 
-Mocks are effective after the `build()` function is called. The `matchBody(func)` function is used to register a function that checks if the request body matches the condition. The `replyBody(func)` function is used to register a function that generates the response body.
+Mocks are effective after the `build()` function is called. The `matchBody(func)` function is used to register a function that checks if the request body matches a condition. The `replyBody(func)` function is used to register a function that generates the response body.
 
 > [!IMPORTANT]
 > There are two HTTP headers that can be used to control or understand the behavior of the proxy:
@@ -112,17 +112,17 @@ npm run start
 Build on _Windows and Linux_
 
 ```shell
-docker build mock-http-proxy:latest .
+docker build mock-http-proxy .
 ```
 
 Run on _Windows_
 
 ```shell
-docker run --env-file ./.env -it --rm -p 3000:3000 -v ${PWD}/mock:/mock-http-proxy/mock scaleforce.azurecr.io/mock-http-proxy:latest
+docker run --env-file ./.env -it --rm -p 3000:3000 -v ${PWD}/mock:/mock-http-proxy/mock mock-http-proxy
 ```
 
 Run on _Linux_
 
 ```shell
-docker run --env-file ./.env -it --rm -p 3000:3000 -v $(pwd)/mock:/mock-http-proxy/mock scaleforce.azurecr.io/mock-http-proxy:latest
+docker run --env-file ./.env -it --rm -p 3000:3000 -v $(pwd)/mock:/mock-http-proxy/mock mock-http-proxy
 ```
