@@ -1,21 +1,25 @@
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { readdirSync } from 'node:fs';
+import { readdir } from 'node:fs/promises';
 import express from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 
 import { baseUrl } from './proxy.js';
 import { mockPath } from './mock.js';
 
-readdirSync(mockPath, { withFileTypes: true, recursive: false })
-    .filter(item => item.isFile() && path.extname(item.name) === '.js')
-    .forEach(item => {
-        let itemPath = path.join(mockPath, item.name);
+const items = await readdir(mockPath, { withFileTypes: true, recursive: false });
 
-        import(pathToFileURL(itemPath));
-        
-        console.log(`Mock: ${itemPath}`);
-    });
+await Promise.all(items.filter(item => item.isFile() && path.extname(item.name) === '.js').map(async item => {
+    let itemPath = path.join(mockPath, item.name);
+
+    try {
+        await import(pathToFileURL(itemPath));
+    
+        console.log('Mock path: %s.', itemPath);
+    } catch (error) {
+        console.error('Mock path: %s, error: %s.', itemPath, error.message);
+    }
+}));
 
 const proxyMiddleware = createProxyMiddleware({
     target: baseUrl,
