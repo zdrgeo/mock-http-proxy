@@ -15,22 +15,22 @@ const TEMPCONVERT_PATH = '/xml/tempconvert.asmx';
  * Mocks CelsiusToFahrenheit SOAP action to reply from EJS template file.
  */
 mock('W3Schools_TempConvert_CelsiusToFahrenheit', TEMPCONVERT_PATH).matchBody(body => {
-    let soapActionData = getSOAPActionData('CelsiusToFahrenheit', body);
+    let celsiusToFahrenheit = getSOAPActionData('CelsiusToFahrenheit', body);
 
-    return soapActionData != null;
+    return celsiusToFahrenheit?.Celsius >= 20;
 }).replyBody(body => {
-    let soapActionData = getSOAPActionData('CelsiusToFahrenheit', body);
+    let celsiusToFahrenheit = getSOAPActionData('CelsiusToFahrenheit', body);
 
-    return readTemplateBodyFile('./W3Schools/TempConvert/SubscriberOnlinestatus/reply.ejs', soapActionData);
-).build();
+    return readTemplateBodyFile('./W3Schools/TempConvert/CelsiusToFahrenheit/reply.ejs', celsiusToFahrenheit);
+}).build();
 
 /**
  * Mocks FahrenheitToCelsius SOAP action to reply from XML file.
  */
 mock('W3Schools_TempConvert_FahrenheitToCelsius', TEMPCONVERT_PATH).matchBody(body => {
-    let soapActionData = getSOAPActionData('FahrenheitToCelsius', body);
+    let fahrenheitToCelsius = getSOAPActionData('FahrenheitToCelsius', body);
 
-    return soapActionData != null;
+    return fahrenheitToCelsius != null;
 }).replyBody(_body => {
     return readBodyFile('./W3Schools/TempConvert/FahrenheitToCelsius/reply.xml')
 }).build();

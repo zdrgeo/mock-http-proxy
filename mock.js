@@ -1,6 +1,6 @@
 import nock from 'nock';
 
-import { baseUrl } from '../proxy.js';
+import { baseUrl } from './proxy.js';
 
 export {
     mockPath,
