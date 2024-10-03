@@ -13,11 +13,12 @@ const TEMPCONVERT_PATH = '/xml/tempconvert.asmx';
 
 /**
  * Mocks CelsiusToFahrenheit SOAP action to reply from EJS template file.
+ * The mock is effective only if the temperature in the request is above 20 degree Celsius.
  */
 mock('W3Schools_TempConvert_CelsiusToFahrenheit', TEMPCONVERT_PATH).matchBody(body => {
     let celsiusToFahrenheit = getSOAPActionData('CelsiusToFahrenheit', body);
 
-    return celsiusToFahrenheit?.Celsius >= 20;
+    return celsiusToFahrenheit?.Celsius > 20;
 }).replyBody(body => {
     let celsiusToFahrenheit = getSOAPActionData('CelsiusToFahrenheit', body);
 

@@ -44,7 +44,7 @@ Mocks are effective after the `build()` function is called. The `matchBody(func)
 
 ## Examples
 
-Mocks [W3Schools TempConvert CelsiusToFahrenheit](https://www.w3schools.com/xml/tempconvert.asmx?op=CelsiusToFahrenheit) SOAP action to reply with response generated from [EJS](https://github.com/mde/ejs) template. The mock is effective only if the temperature in the request is abive 20 degree Celsius. SOAP action body is passed to the [EJS](https://github.com/mde/ejs) template to generate a response with a random value for CelsiusToFahrenheitResult field.
+Mocks [W3Schools TempConvert CelsiusToFahrenheit](https://www.w3schools.com/xml/tempconvert.asmx?op=CelsiusToFahrenheit) SOAP action to reply with response generated from [EJS](https://github.com/mde/ejs) template. The mock is effective only if the temperature in the request is above 20 degree Celsius. SOAP action body is passed to the [EJS](https://github.com/mde/ejs) template to generate a response with a random value for CelsiusToFahrenheitResult field.
 
 ```javascript
 // mock/w3schools-tempconvert.js
@@ -57,7 +57,7 @@ const TEMPCONVERT_PATH = '/xml/tempconvert.asmx';
 mock('W3Schools_TempConvert_CelsiusToFahrenheit', TEMPCONVERT_PATH).matchBody(body => {
     let celsiusToFahrenheit = getSOAPActionData('CelsiusToFahrenheit', body);
 
-    return celsiusToFahrenheit?.Celsius >= 20;
+    return celsiusToFahrenheit?.Celsius > 20;
 }).replyBody(body => {
     let celsiusToFahrenheit = getSOAPActionData('CelsiusToFahrenheit', body);
 
