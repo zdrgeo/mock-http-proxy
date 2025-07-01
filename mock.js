@@ -46,9 +46,28 @@ function mock(name, path) {
         return replyBodySafeFunc;
     }
 
+    function replyHeadersSafe(name, func) {
+        const replyHeadersSafeFunc = () => {
+            let replyHeaders = {};
+
+            try {
+                replyHeaders = func();
+            } catch (error) {
+                replyHeaders = {};
+
+                console.error('Mock %s, reply headers func error: %s', name, error);
+            }
+
+            return replyHeaders;
+        };
+
+        return replyHeadersSafeFunc;
+    }
+
     const mock = {
         matchBodyFunc: (body) => false,
         replyBodyFunc: (body) => '',
+        replyHeadersFunc: () => ({}),
         _scope: null,
 
         matchBody(func) {
@@ -63,11 +82,17 @@ function mock(name, path) {
             return this;
         },
 
+        replyHeaders(func) {
+            this.replyHeadersFunc = func;
+
+            return this;
+        },
+
         build() {
             this._scope = nock(baseUrl, { allowUnmocked: true, badheaders: ['X-Mock-Skip'] })
                 .persist()
                 .post(path, body => matchBodySafe(name, this.matchBodyFunc)(body))
-                .reply(200, (_uri, body) => replyBodySafe(name, this.replyBodyFunc)(body), { 'X-Mock-Name': name });
+                .reply(200, (_uri, body) => replyBodySafe(name, this.replyBodyFunc)(body), { 'X-Mock-Name': name, ...replyHeadersSafe(name, this.replyHeadersFunc)() });
 
             return this;
         },

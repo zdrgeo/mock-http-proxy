@@ -23,7 +23,7 @@ mock('W3Schools_TempConvert_CelsiusToFahrenheit', TEMPCONVERT_PATH).matchBody(bo
     let celsiusToFahrenheit = getSOAPActionData('CelsiusToFahrenheit', body);
 
     return readTemplateBodyFile('./W3Schools/TempConvert/CelsiusToFahrenheit/reply.ejs', celsiusToFahrenheit);
-}).build();
+}).replyHeaders(() => ({'Content-Type': 'application/soap+xml'})).build();
 
 /**
  * Mocks FahrenheitToCelsius SOAP action to reply from XML file.
@@ -34,4 +34,4 @@ mock('W3Schools_TempConvert_FahrenheitToCelsius', TEMPCONVERT_PATH).matchBody(bo
     return fahrenheitToCelsius != null;
 }).replyBody(_body => {
     return readBodyFile('./W3Schools/TempConvert/FahrenheitToCelsius/reply.xml')
-}).build();
+}).replyHeaders(() => ({'Content-Type': 'application/soap+xml'})).build();

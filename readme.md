@@ -27,7 +27,7 @@ mock(/* Mock name (see also X-Mock-Name response header) */, /* URL path */).mat
     let replyBody = 'GENERATED' /* Generated response body */;
 
     return replyBody;
-}).build();
+}).replyHeaders(() => ({/* Generated response headers */})).build();
 ```
 
 Mocks are effective after the `build()` function is called. The `matchBody(func)` function is used to register a function that checks if the request body matches a condition. The `replyBody(func)` function is used to register a function that generates the response body.
@@ -62,7 +62,7 @@ mock('W3Schools_TempConvert_CelsiusToFahrenheit', TEMPCONVERT_PATH).matchBody(bo
     let celsiusToFahrenheit = getSOAPActionData('CelsiusToFahrenheit', body);
 
     return readTemplateBodyFile('./W3Schools/TempConvert/CelsiusToFahrenheit/reply.ejs', celsiusToFahrenheit);
-}).build();
+}).replyHeaders(() => ({'Content-Type': 'application/soap+xml'})).build();
 ```
 
 ```xml
