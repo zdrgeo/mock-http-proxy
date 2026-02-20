@@ -19,7 +19,7 @@ A mock definition uses the mock builder API and has the following structure:
 /**
  * Mocks an HTTP request to conditionally reply with generated response body.
  */
-mock(/* Mock name (see also X-Mock-Name response header) */, /* URL path */).matchBody(body => {
+mock(/* Mock name (see also X-Mock-Name response header) */, /* HTTP verb */, /* URL path */).matchBody(body => {
     let matchBody = true /* Condition to check when inspecting the request body and deciding whether to respond with a generated response body */;
 
     return matchBody;
@@ -54,7 +54,7 @@ const TEMPCONVERT_PATH = '/xml/tempconvert.asmx';
 /**
  * Mocks CelsiusToFahrenheit SOAP action to reply from EJS template file.
  */
-mock('W3Schools_TempConvert_CelsiusToFahrenheit', TEMPCONVERT_PATH).matchBody(body => {
+mock('W3Schools_TempConvert_CelsiusToFahrenheit', 'POST', TEMPCONVERT_PATH).matchBody(body => {
     let celsiusToFahrenheit = getSOAPActionData('CelsiusToFahrenheit', body);
 
     return celsiusToFahrenheit?.Celsius > 20;

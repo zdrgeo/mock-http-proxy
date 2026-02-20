@@ -9,16 +9,30 @@ export {
 
 const mockPath = process.env.MOCK_PATH || 'mock';
 
-function mock(name, path) {
+function mock(name, verb, path) {
+    function matchHeadersSafe(name, func) {
+        const matchHeadersSafeFunc = () => {
+            let matchHeaders = {};
+
+            try {
+                matchHeaders = func();
+            } catch (error) {
+                console.error('Mock %s, match headers func error: %s', name, error);
+            }
+
+            return matchHeaders;
+        };
+
+        return matchHeadersSafeFunc;
+    }
+
     function matchBodySafe(name, func) {
         const matchBodySafeFunc = (body) => {
-            let matchBody = false;
+            let matchBody = true;
 
             try {
                 matchBody = func(body);
             } catch (error) {
-                matchBody = false;
-
                 console.error('Mock %s, match body func error: %s', name, error);
             }
 
@@ -28,22 +42,20 @@ function mock(name, path) {
         return matchBodySafeFunc;
     }
 
-    function replyBodySafe(name, func) {
-        const replyBodySafeFunc = (body) => {
-            let replyBody = '';
+    function replyStatusSafe(name, func) {
+        const replyStatusSafeFunc = () => {
+            let replyStatus = 200;
 
             try {
-                replyBody = func(body);
+                replyStatus = func();
             } catch (error) {
-                replyBody = `Mock ${name}, reply body func error: ${error}`;
-
-                console.error('Mock %s, reply body func error: %s', name, error);
+                console.error('Mock %s, reply status func error: %s', name, error);
             }
 
-            return replyBody;
+            return replyStatus;
         };
 
-        return replyBodySafeFunc;
+        return replyStatusSafeFunc;
     }
 
     function replyHeadersSafe(name, func) {
@@ -53,8 +65,6 @@ function mock(name, path) {
             try {
                 replyHeaders = func();
             } catch (error) {
-                replyHeaders = {};
-
                 console.error('Mock %s, reply headers func error: %s', name, error);
             }
 
@@ -64,11 +74,35 @@ function mock(name, path) {
         return replyHeadersSafeFunc;
     }
 
+    function replyBodySafe(name, func) {
+        const replyBodySafeFunc = (body) => {
+            let replyBody = '';
+
+            try {
+                replyBody = func(body);
+            } catch (error) {
+                console.error('Mock %s, reply body func error: %s', name, error);
+            }
+
+            return replyBody;
+        };
+
+        return replyBodySafeFunc;
+    }
+
     const mock = {
-        matchBodyFunc: (body) => false,
-        replyBodyFunc: (body) => '',
+        matchHeadersFunc: () => ({}),
+        matchBodyFunc: (body) => true,
+        replyStatusFunc: () => 200,
         replyHeadersFunc: () => ({}),
+        replyBodyFunc: (body) => '',
         _scope: null,
+
+        matchHeaders(func) {
+            this.matchHeadersFunc = func;
+
+            return this;
+        },
 
         matchBody(func) {
             this.matchBodyFunc = func;
@@ -76,8 +110,8 @@ function mock(name, path) {
             return this;
         },
 
-        replyBody(func) {
-            this.replyBodyFunc = func;
+        replyStatus(func) {
+            this.replyStatusFunc = func;
 
             return this;
         },
@@ -88,11 +122,18 @@ function mock(name, path) {
             return this;
         },
 
+        replyBody(func) {
+            this.replyBodyFunc = func;
+
+            return this;
+        },
+
         build() {
-            this._scope = nock(baseUrl, { allowUnmocked: true, badheaders: ['X-Mock-Skip'] })
+            this._scope = nock(baseUrl, { allowUnmocked: true, badheaders: ['X-Mock-Skip'], reqheaders: matchHeadersSafe(name, this.matchHeadersFunc)() })
                 .persist()
-                .post(path, body => matchBodySafe(name, this.matchBodyFunc)(body))
-                .reply(200, (_uri, body) => replyBodySafe(name, this.replyBodyFunc)(body), { 'X-Mock-Name': name, ...replyHeadersSafe(name, this.replyHeadersFunc)() });
+                .defaultReplyHeaders({ 'X-Mock-Name': name })
+                .intercept(path, verb, body => matchBodySafe(name, this.matchBodyFunc)(body))
+                .reply(replyStatusSafe(name, this.replyStatusFunc)(), (_uri, body) => replyBodySafe(name, this.replyBodyFunc)(body), replyHeadersSafe(name, this.replyHeadersFunc)());
 
             return this;
         },
